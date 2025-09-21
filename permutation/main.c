@@ -1,72 +1,77 @@
-// with duplicates allowed 
+/**
+ * Return an array of arrays of size *returnSize.
+ * The sizes of the arrays are returned as *returnColumnSizes array.
+ * Note: Both returned array and *columnSizes array must be malloced, assume caller calls free().
+ */
+
 #include <stdio.h> 
 #include <string.h> 
 #include <stdlib.h>
-
-#include <stdlib.h>
-#include <string.h>
 
 void swap(int *x, int *y) 
 { 
 	int temp; 
 	temp = *x;
 	*x = *y;
-	*y = temp; 
-} 
-
-/* Function to print permutations 
-   of string 
-   This function takes three parameters: 
-   1. String 
-   2. Starting index of the string 
-   3. Ending index of the string. */
-void  permute_helper(int *a, int l, int r, int ***results, int *returnSize) 
-{ 
-    int i;
-	int len = r - l + 1;
-    if (l == r)
-	{ 
-		//(*results)[*returnSize] = malloc(sizeof(int) * (len + 1));
-		memcpy(results[*returnSize], a, sizeof(int) * len);
-		(*returnSize)++;
-		return ;
-	} 
-    else
-    { 
-        for (i = l; i <= r; i++) 
-        { 
-            swap((a + l), (a + i)); 
-            permute_helper(a, l + 1, r, results, returnSize);
-            //backtrack
-            swap((a + l), (a + i)); 
-        } 
-    } 
-	
-	// Driver code
+	*y = temp;
 }
 
-int** permute(int* nums, int numsSize, int* returnSize)
+void my_permute(int* s, int s_p, int l_p, int ***results, int **returnSize)
 {
-	int **results = malloc(sizeof(int *) * 100);
+    if (s_p == l_p)
+    {
+		(*results)[(**returnSize)] = malloc(sizeof(int) * (l_p + 1));
+		memcpy((*results)[(**returnSize)], s, sizeof(int) * (l_p + 1));
+		++(**returnSize);
+		return ;
+    }
+    else
+    {
+        for (int i = s_p; i <= l_p; i++)
+        {
+            swap(&s[s_p], &s[i]);
+            my_permute(s, s_p + 1, l_p, &(*results), &(*returnSize));
 
-	permute_helper(nums, 0, numsSize, &results, returnSize);
+            // backtrack
+            swap(&s[s_p], &s[i]);
+        }
+        return ;
+    }
+}
 
-	results = realloc(results, sizeof(int *) * (*returnSize));
+int** permute(int* nums, int numsSize, int* returnSize, int** returnColumnSizes)
+{
+	int **results = malloc(sizeof(int *));
 
-    // *returnColumnSizes = (int*)malloc(sizeof(int) * (*returnSize));
-    // for (int i = 0; i < *returnSize; i++) {
-    //     (*returnColumnSizes)[i] = numsSize;
-    // }
+	results[0] = NULL;
+	*returnSize = 0;
+	my_permute(nums, 0, numsSize - 1, &results, &returnSize);
+	results[(*returnSize)] = NULL;
+
+	*returnColumnSizes = (int*)malloc(sizeof(int) * (*returnSize));
+    for (int i = 0; i < *returnSize; i++) {
+        (*returnColumnSizes)[i] = numsSize;
+    }
 	return (results);
 }
-int main() 
-{ 
-    char str[] = "12"; 
-    int n = strlen(str);
-	int returnSize = 0;
+
+int main(void) 
+{
+    int s[3] = {1, 2, 3};
 	int **permute1;
+	int rs;
+	int	*reCS;
 
-    permute1 = permute(str, n - 1, &returnSize); 
-
-    return 0; 
+	permute1 = permute(s, 3, &rs, &reCS);
+	printf("%d \n", rs);
+	int i = 0;
+	while (permute1[i])
+	{
+		printf("%d ", permute1[i][0]);
+		printf("%d ", permute1[i][1]);
+		printf("%d ", permute1[i][2]);
+		printf("\n");
+		i++;
+	}
+    return (0);
 }
