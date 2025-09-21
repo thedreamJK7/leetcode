@@ -35,34 +35,40 @@ void list_remove_first(t_list **list)
 
 int main()
 {
-	char *str;
+	char *s;
 	char *tmp;
 	int	i = 0;
 	t_list *brackets;
 	t_list *temp;
 
-	str = "{{[]}}\0";
+	s = "(){}\0";
 	brackets = NULL;
-	while (str[i])
+	if (strlen(s) % 2 != 0)
+		return (0);
+	while (s[i])
 	{
-		tmp = strchr("({[", str[i]);
+		tmp = strchr("({[", s[i]);
 		if (tmp)
 		{
-			temp = ft_lstnew(strchr("({[", str[i])[0]);
+			temp = ft_lstnew(strchr("({[", s[i])[0]);
 			ft_lstadd_front(&brackets, temp);
 			i++;
-			continue ; 
+			continue ;
 		} 
-		tmp = strchr("]})", str[i]);
-		if (*(tmp) != brackets->content)
+		tmp = strchr("]})", s[i]);
+		if (!brackets || !(((*(tmp) - brackets->content) == 1) || ((*(tmp) - brackets->content) == 2)))
 		{
 			return (0);
 		}
-		if (*(tmp) == brackets->content)
+		if (((*(tmp) - brackets->content) == 1) || ((*(tmp) - brackets->content) == 2))
 		{
 			list_remove_first(&brackets);
 		}
 		i++;
 	}
+	if (brackets)
+    {
+        return (0);
+    }
 	return (1);
 }
