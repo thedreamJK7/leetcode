@@ -58,8 +58,8 @@ int main()
 		tmp = strchr("]})", s[i]);
 		if (!brackets || !(((*(tmp) - brackets->content) == 1) || ((*(tmp) - brackets->content) == 2)))
 		{
-			return (0);
 		}
+			return (0);
 		if (((*(tmp) - brackets->content) == 1) || ((*(tmp) - brackets->content) == 2))
 		{
 			list_remove_first(&brackets);

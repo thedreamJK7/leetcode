@@ -45,7 +45,7 @@ struct ListNode* mergeTwoLists(struct ListNode* list1, struct ListNode* list2) {
     int len = i;
     for (int j = 0; len > j; j++)
     {
-        for(int k = 0; len - j - 1> k; k++)
+        for(int k = 0; len - j - 1 > k; k++)
         {
             int tmp;
             if (listarr[k] > listarr[k+1])
