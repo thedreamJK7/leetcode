@@ -9,5 +9,7 @@
 #include <stdlib.h>
 
 char*** solveNQueens(int n, int* returnSize, int** returnColumnSizes) {
+	char ***result;
 
+	
 }
